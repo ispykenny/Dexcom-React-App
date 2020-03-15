@@ -9,15 +9,13 @@ let hasMounted = true;
 
 
 function Reading() {
-  const cookies = new Cookies();
   GenerateUser();
+  const cookies = new Cookies();
   const startDate = moment().subtract(1, 'days').format("Y-MM-DDTkk:mm:ss")
   const nowDate = moment().format("Y-MM-DDTkk:mm:ss");
 
   if (hasMounted && cookies.get('access_token') !== undefined) {
-    const readings = FetchData(
-      `http://localhost:5000/get-data?access_token=${cookies.get('access_token')}&refresh_token=${cookies.get('refresh_token')}&dateFrom=${startDate}&dateNow=${nowDate}`
-    )
+    const readings = FetchData(`http://localhost:5000/get-data?access_token=${cookies.get('access_token')}&refresh_token=${cookies.get('refresh_token')}&dateFrom=${startDate}&dateNow=${nowDate}`)
     if (readings) {
       console.log(readings)
       hasMounted = false;
@@ -27,7 +25,6 @@ function Reading() {
       <Login/>
     )
   }
-
 
   if (cookies.get('has_access')) {
     return (
@@ -40,6 +37,7 @@ function Reading() {
   } else {
     return <Login/>
   }
+
 }
 
 export default Reading;
