@@ -31,4 +31,4 @@ function GenerateUser() {
 }
 
 
-export  {FetchData, GenerateUser};
+export {FetchData, GenerateUser};
