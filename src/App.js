@@ -8,16 +8,28 @@ import ChangeDays from './Components/ChangeDays';
 let hasMounted = true;
 
 
+function getLowestReading({dexcom}) {
+  const {egvs : allReadings} = dexcom
+  let readingsOnly = [];
+  for(let i = 0; i < allReadings.length; i++) {
+    readingsOnly.push(allReadings[i].value)
+  }
+  const getlowNumber = Math.min.apply(Math, readingsOnly);
+  console.log('lowest reading', getlowNumber)
+}
+
+
 function Reading() {
   GenerateUser();
   const cookies = new Cookies();
-  const startDate = moment().subtract(1, 'days').format("Y-MM-DDTkk:mm:ss")
+  const startDate = moment().subtract(30, 'days').format("Y-MM-DDTkk:mm:ss")
   const nowDate = moment().format("Y-MM-DDTkk:mm:ss");
 
   if (hasMounted && cookies.get('access_token') !== undefined) {
     const readings = FetchData(`http://localhost:5000/get-data?access_token=${cookies.get('access_token')}&refresh_token=${cookies.get('refresh_token')}&dateFrom=${startDate}&dateNow=${nowDate}`)
+    
     if (readings) {
-      console.log(readings)
+      getLowestReading(readings)
       hasMounted = false;
     }
   } else {
